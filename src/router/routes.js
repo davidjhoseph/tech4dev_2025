@@ -5,6 +5,7 @@ import AuthLayout from "@/components/layout/AuthLayout.vue";
 import LoginView from "@/pages/LoginView.vue";
 import RegisterView from "@/pages/RegisterView.vue";
 import GeneralLayout from "@/components/layout/GeneralLayout.vue";
+import Test from "@/pages/Test.vue";
 export default [
   {
     path: "/",
@@ -28,7 +29,6 @@ export default [
       { path: "register", component: RegisterView, name: "register-page" },
     ],
   },
-
 ];
 
 
