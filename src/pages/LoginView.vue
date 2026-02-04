@@ -1,41 +1,32 @@
 <template>
     <div>
-        <div class="text-2xl font-bold">User: {{ user ?? 'No User Found' }}</div>
-        <div class="flex items-center space-x-4">
-            <button class="px-6 py-2 mt-10 bg-green-600 text-white rounded-xl"
-                @click="updateCounter('decrement')">-</button>
-            <CustomButton class="bg-green-500 text-white px-6 py-2 rounded-lg text-2xl">{{ counter }}
-            </CustomButton>
-            <button class="px-6 py-2 mt-10 bg-green-600 text-white rounded-xl"
-                @click="updateCounter('increment')">+</button>
-        </div>
-        <button class="px-6 py-2 mt-10 bg-green-600 text-white rounded-xl"
-            @click="updateComponentUser(null)">Clear User</button>
-        <button class="px-6 py-2 mt-10 bg-green-600 text-white rounded-xl"
-            @click="updateComponentUser({ name: 'Funmi', age: 40, email: 'funmi@email.com' })">Update User</button>
-
+        <div class="text-2xl font-bold text-center mb-10">Lezadee Login</div>
+        <form @submit.prevent="login" class="flex flex-col space-y-4 w-full max-w-md">
+            <input type="email" class="border-2 border-gray-300 rounded-md p-2" v-model="email" placeholder="Email">
+            <input type="password" class="border-2 border-gray-300 rounded-md p-2" v-model="password"
+                placeholder="Password">
+            <button type="submit" class="bg-blue-500 text-white rounded-md p-2">Login</button>
+        </form>
     </div>
 </template>
 
-<script>
-import CustomButton from '@/components/CustomButton.vue';
-import { mapState, mapActions } from 'vuex';
-export default {
-    name: 'LoginView',
-    components: { CustomButton },
-    methods: {
-        ...mapActions('counterStore', [
-            'updateCounter'
-        ]),
-        ...mapActions('userStore', { updateComponentUser: 'updateUser' }),
-    },
-    computed: {
-        ...mapState('counterStore', { counter: 'count' }),
-        ...mapState('userStore', ['user']),
+<script setup>
+import { useAuthStore } from '@/stores/auth';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+//State
+const authStore = useAuthStore();
+const email = ref('');
+const password = ref('');
+const router = useRouter();
+// Methods
+const login = async () => {
+    try {
+        await authStore.login(email.value, password.value);
+        router.push('/');
+    } catch (error) {
+        console.error(error);
+        // toast.error(error.response.data.message);
     }
-
 }
-
 </script>
-
-<style lang="scss" scoped></style>
