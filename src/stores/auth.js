@@ -26,7 +26,7 @@ export const useAuthStore = defineStore("auth", () => {
     try {
         const response = await api.post("/login", { email, password });
 
-        setAuthCredentials(response.data.data);
+        setAuthCredentials(response.data);
     } catch (error) {
       console.error(error);
     }
