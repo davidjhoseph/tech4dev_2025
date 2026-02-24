@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import api from "@/helpers/axios";
 import { ref, computed } from "vue";
+import { useCartStore } from "./cart";
 export const useAuthStore = defineStore("auth", () => {
   const token = ref(localStorage.getItem("authToken") || null);
   const user = ref(JSON.parse(localStorage.getItem("user")) || null);
@@ -24,13 +25,29 @@ export const useAuthStore = defineStore("auth", () => {
 
   const login = async (email, password) => {
     try {
-        const response = await api.post("/login", { email, password });
+      const response = await api.post("/login", { email, password });
 
-        setAuthCredentials(response.data);
+      setAuthCredentials(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
+  // const updateApiAfterAuthentication = async () => {
+  //   const cartStore = useCartStore();
+  //   const { cartItems } = cartStore;
+  //   if (cartItems.length) {
+  //     await cartStore.centralizeCart({
+  //       cart: [
+  //         { product_id: 5, quantity: 3 },
+  //         { product_id: 10, quantity: 5 },
+  //         { product_id: 11, quantity: 5 },
+  //         { product_id: 13, quantity: 5 },
+  //         { product_id: 16, quantity: 5 },
+  //       ],
+  //     });
+  //   }
+  // };
 
   const register = async (data) => {
     try {
